@@ -31,7 +31,6 @@
       min-width: 100vw;
       background: #fff;
     }
-    /* Layout split for desktop */
     .main-layout {
       display: flex;
       width: 100vw;
@@ -55,7 +54,7 @@
       align-items: stretch;
       justify-content: stretch;
     }
-    /* Desktop: Headshot left, boxes right */
+    /* Desktop: Headshot left, boxes right, horizontal carousel */
     @media (min-width: 901px) {
       .headshot-bg {
         left: 0;
@@ -64,6 +63,7 @@
         background-position: center right;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
+        filter: none !important; /* No blur on desktop */
       }
       .carousel {
         left: 50vw;
@@ -76,10 +76,11 @@
       }
       .carousel-box {
         position: absolute;
+        top: 0;
         left: 0;
-        top: 50%;
         width: 100%;
         max-width: 100%;
+        height: 100%;
         background: var(--box-bg);
         box-shadow: 0 8px 32px rgba(0,0,0,0.08);
         text-align: center;
@@ -87,7 +88,7 @@
         box-sizing: border-box;
         border-radius: 0;
         opacity: 0;
-        filter: blur(8px);
+        filter: none;
         transition:
           filter 0.9s var(--transition),
           transform 0.9s var(--transition),
@@ -99,60 +100,60 @@
         justify-content: center;
         overflow: hidden;
         min-height: 340px;
-        transform: translateY(-50%) scale(0.95);
+        min-width: 100%;
+        will-change: transform, opacity, filter;
       }
-      #box1.active, #box2.active, #box3.active {
-        transform: translateY(-50%) scale(1.06);
-      }
+      /* Horizontal carousel states */
       .carousel-box.active {
         opacity: 1;
-        filter: blur(0);
+        filter: none;
         pointer-events: all;
         z-index: 10;
+        transform: translateX(0) scale(1.06);
       }
-      .carousel-box.up {
+      .carousel-box.left {
         opacity: 0;
-        filter: blur(8px);
+        filter: none;
         z-index: 1;
-        transform: translateY(-170%) scale(0.92);
+        transform: translateX(-100%) scale(0.92);
       }
-      .carousel-box.down {
+      .carousel-box.right {
         opacity: 0;
-        filter: blur(8px);
+        filter: none;
         z-index: 1;
-        transform: translateY(170%) scale(0.92);
+        transform: translateX(100%) scale(0.92);
       }
-      /* Dots below boxes */
+      /* Navigation dots below boxes, smaller size */
       .carousel-dots {
         position: absolute;
         left: 0;
         right: 0;
-        bottom: 2.2rem;
+        bottom: 1.2rem;
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 1.1em;
+        gap: 0.6em;
         z-index: 20;
         pointer-events: all;
       }
       .carousel-dot {
-        width: 14px; height: 14px;
+        width: 10px; height: 10px;
         border-radius: 50%;
         background: var(--dot-inactive);
-        border: 2px solid #fff;
+        border: 1.5px solid #fff;
         cursor: pointer;
         transition: background 0.3s, border 0.3s;
         box-shadow: 0 1px 4px rgba(0,0,0,0.10);
       }
       .carousel-dot.active {
         background: var(--dot-active);
-        border: 2px solid var(--dot-active);
+        border: 1.5px solid var(--dot-active);
       }
       .scroll-btn {
         display: none;
       }
     }
-    /* Mobile: Full background, boxes full width, dots vertical on right */
+    /* Mobile: Full background, vertical carousel, dots vertical on right */
     @media (max-width: 900px) {
       .headshot-bg {
         left: 0;
@@ -219,7 +220,7 @@
         z-index: 1;
         transform: translateY(120%) scale(0.92);
       }
-      /* Dots vertical on right */
+      /* Dots vertical on right, smaller size */
       .carousel-dots {
         position: absolute;
         right: 1.2rem;
@@ -228,22 +229,22 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 1.1em;
+        gap: 0.6em;
         z-index: 20;
         pointer-events: all;
       }
       .carousel-dot {
-        width: 14px; height: 14px;
+        width: 10px; height: 10px;
         border-radius: 50%;
         background: var(--dot-inactive);
-        border: 2px solid #fff;
+        border: 1.5px solid #fff;
         cursor: pointer;
         transition: background 0.3s, border 0.3s;
         box-shadow: 0 1px 4px rgba(0,0,0,0.10);
       }
       .carousel-dot.active {
         background: var(--dot-active);
-        border: 2px solid var(--dot-active);
+        border: 1.5px solid var(--dot-active);
       }
       .scroll-btn {
         display: block;
@@ -255,15 +256,15 @@
         color: #fff;
         border: none;
         border-radius: 999px;
-        width: 48px;
-        height: 48px;
+        width: 36px;
+        height: 36px;
         display: flex;
         align-items: center;
         justify-content: center;
         box-shadow: 0 2px 8px rgba(0,0,0,0.12);
         cursor: pointer;
         z-index: 30;
-        font-size: 2rem;
+        font-size: 1.4rem;
         transition: background 0.2s, box-shadow 0.2s;
       }
       .scroll-btn:active {
@@ -372,7 +373,7 @@
       </div>
     </div>
     <!-- Box 2 -->
-    <div class="carousel-box down" id="box2">
+    <div class="carousel-box right" id="box2">
       <div>
         <div class="section-title unblurred">About Me</div>
         <div class="about-text unblurred">
@@ -381,7 +382,7 @@
       </div>
     </div>
     <!-- Box 3 -->
-    <div class="carousel-box down" id="box3">
+    <div class="carousel-box right" id="box3">
       <div>
         <div class="section-title unblurred">Get In Touch</div>
         <div class="contact-text unblurred">
@@ -418,7 +419,7 @@
     </div>
     <!-- Scroll Button (Mobile only) -->
     <button class="scroll-btn" id="scrollBtn" aria-label="Scroll Down" style="display:none;">
-      <svg width="28" height="28" viewBox="0 0 24 24"><path fill="#fff" d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#fff" d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
     </button>
   </div>
   <script>
@@ -433,36 +434,36 @@
     let current = 0;
 
     function setBoxState(idx) {
+      // Desktop: horizontal; Mobile: vertical
+      const isDesktop = window.innerWidth > 900;
       boxes.forEach((box, i) => {
-        box.classList.remove('active', 'up', 'down');
+        box.classList.remove('active', 'left', 'right', 'up', 'down');
         if (i === idx) {
           box.classList.add('active');
           box.querySelectorAll('.unblurred').forEach(e => e.classList.remove('blurred'));
         } else if (i < idx) {
-          box.classList.add('up');
+          if (isDesktop) {
+            box.classList.add('left');
+          } else {
+            box.classList.add('up');
+          }
           box.querySelectorAll('.unblurred').forEach(e => e.classList.add('blurred'));
         } else {
-          box.classList.add('down');
+          if (isDesktop) {
+            box.classList.add('right');
+          } else {
+            box.classList.add('down');
+          }
           box.querySelectorAll('.unblurred').forEach(e => e.classList.add('blurred'));
         }
       });
       // Dots
       dots.forEach((dot,i)=>dot.classList.toggle('active', i===idx));
-      // Headshot parallax effects
-      if (window.innerWidth > 900) {
-        // Desktop: subtle left-side effects
-        if (idx === 0) {
-          headshot.style.filter = "blur(0) brightness(1)";
-          headshot.style.transform = "scale(1.08) translateY(0)";
-        } else if (idx === 1) {
-          headshot.style.filter = "blur(6px) brightness(0.96)";
-          headshot.style.transform = "scale(1.02) translateY(-30px)";
-        } else {
-          headshot.style.filter = "blur(12px) brightness(0.93)";
-          headshot.style.transform = "scale(0.98) translateY(-60px)";
-        }
+      // Headshot effect
+      if (isDesktop) {
+        headshot.style.filter = "none";
+        headshot.style.transform = "scale(1.08) translateY(0)";
       } else {
-        // Mobile: full background
         if (idx === 0) {
           headshot.style.filter = "blur(0) brightness(1)";
           headshot.style.transform = "scale(1.08) translateY(0)";
@@ -475,7 +476,7 @@
         }
       }
       // Show/hide scroll button on mobile
-      if (window.innerWidth <= 900) {
+      if (!isDesktop) {
         scrollBtn.style.display = (idx < 2) ? 'flex' : 'none';
       }
     }
@@ -490,28 +491,51 @@
     function handleWheel(e) {
       e.preventDefault();
       if (scrollTimeout) return;
-      if (e.deltaY > 0) goTo(Math.min(current + 1, 2));
-      else goTo(Math.max(current - 1, 0));
+      if (window.innerWidth > 900) {
+        // Desktop: horizontal
+        if (e.deltaY > 0 || e.deltaX > 0) goTo(Math.min(current + 1, 2));
+        else goTo(Math.max(current - 1, 0));
+      } else {
+        // Mobile: vertical
+        if (e.deltaY > 0) goTo(Math.min(current + 1, 2));
+        else goTo(Math.max(current - 1, 0));
+      }
       scrollTimeout = setTimeout(() => scrollTimeout = null, 950);
     }
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('keydown', e => {
-      if (e.key === 'ArrowDown' || e.key === 'PageDown') goTo(Math.min(current + 1, 2));
-      if (e.key === 'ArrowUp' || e.key === 'PageUp') goTo(Math.max(current - 1, 0));
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') goTo(Math.min(current + 1, 2));
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') goTo(Math.max(current - 1, 0));
+      if (window.innerWidth <= 900) {
+        if (e.key === 'ArrowDown') goTo(Math.min(current + 1, 2));
+        if (e.key === 'ArrowUp') goTo(Math.max(current - 1, 0));
+      }
     });
 
     // Touch/Swipe navigation
-    let touchStartY = null;
+    let touchStartX = null, touchStartY = null;
     window.addEventListener('touchstart', e => {
+      touchStartX = e.touches[0].clientX;
       touchStartY = e.touches[0].clientY;
     });
     window.addEventListener('touchend', e => {
-      if (touchStartY === null) return;
+      if (touchStartX === null || touchStartY === null) return;
+      let deltaX = e.changedTouches[0].clientX - touchStartX;
       let deltaY = e.changedTouches[0].clientY - touchStartY;
-      if (Math.abs(deltaY) > 40) {
-        if (deltaY < 0) goTo(Math.min(current + 1, 2));
-        else goTo(Math.max(current - 1, 0));
+      if (window.innerWidth > 900) {
+        // Desktop: horizontal swipe
+        if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) {
+          if (deltaX < 0) goTo(Math.min(current + 1, 2));
+          else goTo(Math.max(current - 1, 0));
+        }
+      } else {
+        // Mobile: vertical swipe
+        if (Math.abs(deltaY) > 40 && Math.abs(deltaY) > Math.abs(deltaX)) {
+          if (deltaY < 0) goTo(Math.min(current + 1, 2));
+          else goTo(Math.max(current - 1, 0));
+        }
       }
+      touchStartX = null;
       touchStartY = null;
     });
 
@@ -522,7 +546,7 @@
       });
     });
 
-    // Scroll button (mobile)
+    // Scroll button (Mobile only)
     scrollBtn.addEventListener('click', () => {
       goTo(current + 1);
     });
