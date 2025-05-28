@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Robin Benny - Global Business Leader</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@800&family=Georgia&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@800&family=Georgia&display=swap" rel="stylesheet">
   <style>
     :root {
       --box-bg: rgba(255,255,255,0.5);
@@ -16,7 +16,7 @@
       --cta-email: #D93025;
       --transition: cubic-bezier(.4,0,.2,1);
       --dot-active: #4285F4;
-      --dot-inactive: #555;
+      --dot-inactive: #bbb;
     }
     html, body {
       height: 100%;
@@ -30,6 +30,11 @@
       min-height: 100vh;
       min-width: 100vw;
       background: #fff;
+    }
+    .main-layout {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
     }
     .headshot-bg {
       position: fixed;
@@ -49,6 +54,7 @@
       align-items: stretch;
       justify-content: stretch;
     }
+    /* Desktop: Headshot left, boxes right, horizontal carousel */
     @media (min-width: 901px) {
       .headshot-bg {
         left: 0;
@@ -57,7 +63,7 @@
         background-position: center right;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
-        filter: none !important;
+        filter: none !important; /* No blur on desktop */
       }
       .carousel {
         left: 50vw;
@@ -97,6 +103,7 @@
         min-width: 100%;
         will-change: transform, opacity, filter;
       }
+      /* Horizontal carousel states */
       .carousel-box.active {
         opacity: 1;
         filter: none;
@@ -116,39 +123,37 @@
         z-index: 1;
         transform: translateX(100%) scale(0.92);
       }
+      /* Navigation dots below boxes, smaller size */
       .carousel-dots {
         position: absolute;
         left: 0;
         right: 0;
-        bottom: 1.6rem;
+        bottom: 1.2rem;
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 0.8em;
-        z-index: 9999;
+        gap: 0.6em;
+        z-index: 20;
         pointer-events: all;
-        background: rgba(255,255,255,0.7);
-        border-radius: 20px;
-        padding: 0.3em 1em;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.07);
       }
       .carousel-dot {
-        width: 14px; height: 14px;
+        width: 10px; height: 10px;
         border-radius: 50%;
         background: var(--dot-inactive);
-        border: 2px solid #fff;
+        border: 1.5px solid #fff;
         cursor: pointer;
         transition: background 0.3s, border 0.3s;
-        box-shadow: 0 1px 6px rgba(0,0,0,0.15);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.10);
       }
       .carousel-dot.active {
         background: var(--dot-active);
-        border: 2px solid var(--dot-active);
+        border: 1.5px solid var(--dot-active);
       }
       .scroll-btn {
         display: none;
       }
     }
+    /* Mobile: Full background, vertical carousel, dots vertical on right */
     @media (max-width: 900px) {
       .headshot-bg {
         left: 0;
@@ -190,7 +195,7 @@
         justify-content: flex-end;
         overflow: hidden;
         min-height: 320px;
-        bottom: 2.5rem;
+        bottom: 0;
         top: unset;
         transform: translateY(0) scale(0.95);
       }
@@ -215,6 +220,7 @@
         z-index: 1;
         transform: translateY(120%) scale(0.92);
       }
+      /* Dots vertical on right, smaller size */
       .carousel-dots {
         position: absolute;
         right: 1.2rem;
@@ -224,25 +230,21 @@
         flex-direction: column;
         align-items: center;
         gap: 0.6em;
-        z-index: 9999;
+        z-index: 20;
         pointer-events: all;
-        background: rgba(255,255,255,0.7);
-        border-radius: 20px;
-        padding: 0.3em 0.5em;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.07);
       }
       .carousel-dot {
-        width: 14px; height: 14px;
+        width: 10px; height: 10px;
         border-radius: 50%;
         background: var(--dot-inactive);
-        border: 2px solid #fff;
+        border: 1.5px solid #fff;
         cursor: pointer;
         transition: background 0.3s, border 0.3s;
-        box-shadow: 0 1px 6px rgba(0,0,0,0.15);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.10);
       }
       .carousel-dot.active {
         background: var(--dot-active);
-        border: 2px solid var(--dot-active);
+        border: 1.5px solid var(--dot-active);
       }
       .scroll-btn {
         display: block;
@@ -270,6 +272,7 @@
         box-shadow: 0 1px 4px rgba(0,0,0,0.16);
       }
     }
+    /* Typography */
     .title {
       font-family: 'EB Garamond', serif;
       font-weight: 800;
@@ -297,6 +300,7 @@
       color: #000;
       margin-bottom: 1.2em;
     }
+    /* CTA Buttons */
     .cta-group {
       display: flex;
       flex-wrap: wrap;
@@ -430,6 +434,7 @@
     let current = 0;
 
     function setBoxState(idx) {
+      // Desktop: horizontal; Mobile: vertical
       const isDesktop = window.innerWidth > 900;
       boxes.forEach((box, i) => {
         box.classList.remove('active', 'left', 'right', 'up', 'down');
@@ -452,7 +457,9 @@
           box.querySelectorAll('.unblurred').forEach(e => e.classList.add('blurred'));
         }
       });
+      // Dots
       dots.forEach((dot,i)=>dot.classList.toggle('active', i===idx));
+      // Headshot effect
       if (isDesktop) {
         headshot.style.filter = "none";
         headshot.style.transform = "scale(1.08) translateY(0)";
@@ -468,14 +475,14 @@
           headshot.style.transform = "scale(0.98) translateY(-80px)";
         }
       }
+      // Show/hide scroll button on mobile
       if (!isDesktop) {
         scrollBtn.style.display = (idx < 2) ? 'flex' : 'none';
       }
     }
 
     function goTo(idx) {
-      if (idx > 2) return; // No redirect, just stay on last box
-      if (idx < 0) return;
+      if (idx < 0 || idx > 2) return;
       current = idx;
       setBoxState(current);
     }
@@ -485,21 +492,23 @@
       e.preventDefault();
       if (scrollTimeout) return;
       if (window.innerWidth > 900) {
-        if (e.deltaY > 0 || e.deltaX > 0) goTo(current + 1);
-        else goTo(current - 1);
+        // Desktop: horizontal
+        if (e.deltaY > 0 || e.deltaX > 0) goTo(Math.min(current + 1, 2));
+        else goTo(Math.max(current - 1, 0));
       } else {
-        if (e.deltaY > 0) goTo(current + 1);
-        else goTo(current - 1);
+        // Mobile: vertical
+        if (e.deltaY > 0) goTo(Math.min(current + 1, 2));
+        else goTo(Math.max(current - 1, 0));
       }
       scrollTimeout = setTimeout(() => scrollTimeout = null, 950);
     }
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('keydown', e => {
-      if (e.key === 'ArrowRight' || e.key === 'PageDown') goTo(current + 1);
-      if (e.key === 'ArrowLeft' || e.key === 'PageUp') goTo(current - 1);
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') goTo(Math.min(current + 1, 2));
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') goTo(Math.max(current - 1, 0));
       if (window.innerWidth <= 900) {
-        if (e.key === 'ArrowDown') goTo(current + 1);
-        if (e.key === 'ArrowUp') goTo(current - 1);
+        if (e.key === 'ArrowDown') goTo(Math.min(current + 1, 2));
+        if (e.key === 'ArrowUp') goTo(Math.max(current - 1, 0));
       }
     });
 
@@ -514,14 +523,16 @@
       let deltaX = e.changedTouches[0].clientX - touchStartX;
       let deltaY = e.changedTouches[0].clientY - touchStartY;
       if (window.innerWidth > 900) {
+        // Desktop: horizontal swipe
         if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) {
-          if (deltaX < 0) goTo(current + 1);
-          else goTo(current - 1);
+          if (deltaX < 0) goTo(Math.min(current + 1, 2));
+          else goTo(Math.max(current - 1, 0));
         }
       } else {
+        // Mobile: vertical swipe
         if (Math.abs(deltaY) > 40 && Math.abs(deltaY) > Math.abs(deltaX)) {
-          if (deltaY < 0) goTo(current + 1);
-          else goTo(current - 1);
+          if (deltaY < 0) goTo(Math.min(current + 1, 2));
+          else goTo(Math.max(current - 1, 0));
         }
       }
       touchStartX = null;
