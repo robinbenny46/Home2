@@ -466,10 +466,7 @@
     }
 
     function goTo(idx) {
-      if (idx > 2) {
-        window.location.href = "https://sites.google.com/view/robinbenny46/professional-experience";
-        return;
-      }
+      if (idx > 2) return; // No redirect, just stay on last box
       if (idx < 0) return;
       current = idx;
       setBoxState(current);
